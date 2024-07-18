@@ -377,6 +377,44 @@ func (i *Image) Text(label string, x, y int, fontPath string, fontColor color.Co
 	return i
 }
 
+// 添加从byte数组读字体，内嵌字体场景
+func (i *Image) Text2(label string, x, y int, fontBytes []byte, fontColor color.Color, fontSize float64, dpi float64) *Image {
+	if i.Error != nil {
+		return i
+	}
+
+	// Load font
+	/*fontBytes, err := ioutil.ReadFile(fontPath)
+	if err != nil {
+		i.addError(err)
+		return i
+	}*/
+	myFont, err := freetype.ParseFont(fontBytes)
+	if err != nil {
+		i.addError(err)
+		return i
+	}
+
+	c := freetype.NewContext()
+	c.SetDPI(dpi)
+	c.SetFont(myFont)
+	c.SetFontSize(fontSize)
+	c.SetClip(i.Bounds())
+	c.SetDst(i.image)
+	uni := image.NewUniform(fontColor)
+	c.SetSrc(uni)
+	c.SetHinting(font.HintingNone)
+
+	// Draw text
+	pt := freetype.Pt(x, y+int(c.PointToFixed(fontSize)>>6))
+	if _, err := c.DrawString(label, pt); err != nil {
+		i.addError(err)
+		return i
+	}
+
+	return i
+}
+
 // Thumbnail returns a thumbnail of the image with given width and height.
 func (i *Image) Thumbnail(width, height int) *Image {
 	if i.Error != nil {
