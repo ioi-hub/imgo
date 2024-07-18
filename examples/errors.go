@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/fishtailstudio/imgo"
+	"github.com/ioi-hub/imgo"
 )
 
 func main() {
