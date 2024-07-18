@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/fishtailstudio/imgo"
+	"github.com/ioi-hub/imgo"
 )
 
 func main() {

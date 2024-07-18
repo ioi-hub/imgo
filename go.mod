@@ -1,4 +1,4 @@
-module github.com/fishtailstudio/imgo
+module github.com/ioi-hub/imgo
 
 go 1.18
 
